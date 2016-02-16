@@ -48,6 +48,7 @@ rotate 后: filename.log-rotate-20160101-0400
 - 去掉文件名中带有 rotate 的文件
 - 遍历 files
 	- 根据 `shouldRotate(file)` 过滤出需要 rotate 的文件，得到新的 files
+- 同步 last-rotate 文件
 - 遍历 files
 	- 重命名文件为 `filename-rotate-20160101-0400` (例子而已)
 - 保存 files 重命名后数组 renamedFiles，可能会要后续处理
@@ -70,9 +71,9 @@ TODO 清理压缩失败的文件
 	- 返回 true
 - 如果 file.size 小于 minsize
 	- 返回 false
-- 如果 `now - file.lastRotate > interval`
-	- 返回 true
-- 返回 false
+- 如果存在 file.lastRotate 且 `now - file.lastRotate < interval`
+	- 返回 false
+- 返回 true
 
 #### cleanDisk(size, callback) 实现
 
