@@ -1,6 +1,12 @@
 var debug = require('debug')('min-rotate')
 var fs = require('mz/fs')
 var spawn = require('mz/child_process').spawn
+var _ = require('lodash')
+var async = require('async')
+var glob = require('glob')
+var moment = require('moment')
+
+var ASYNC_LIMIT = 4
 
 function Rotate(config) {
 	this.initConfig(config)
@@ -14,6 +20,26 @@ proto.initConfig = function() {
 }
 
 proto.run = function() {
+	var me = this
+	var config = me.config
+	glob(config.file, function(err, files) {
+		async.filterLimit(files, ASYNC_LIMIT, function(file, cb) {
+			me.shouldRotate(file).then(function(val) {
+				cb(null, val)
+			})
+		}, function(err, files2rotate) {
+			// TODO sync last rotate
+			me.renamedFiles = files2rotate.map(function(file) {
+				return me.renameFile(file)
+			})
+		})
+	})
+}
+
+proto.renameFile = function(filename) {
+	var now = moment()
+	var arr = [filename, rotate, now.format('YYYYMMDD'), now.format('HHMM')]
+	return arr.join('-')
 }
 
 proto.shouldRotate = function(filename) {

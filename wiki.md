@@ -24,7 +24,7 @@ rotate 后: filename.log-rotate-20160101-0400
 
 参数参照 `man logrotate`
 
-- filename: blob 格式，支持逗号
+- file: glob 格式，支持逗号
 - shouldCompress: 是否压缩，缺省 false
 - interval: 间隔，缺省 `Infinity`
 - postrename: 文件重命名执行脚本，例如 nginx 日志则是 `nginx -s reopen`
@@ -44,7 +44,7 @@ rotate 后: filename.log-rotate-20160101-0400
 
 ### 实现逻辑
 
-- 根据 blob 列出所有 files
+- 根据 glob 列出所有 files
 - 去掉文件名中带有 rotate 的文件
 - 遍历 files
 	- 根据 `shouldRotate(file)` 过滤出需要 rotate 的文件，得到新的 files

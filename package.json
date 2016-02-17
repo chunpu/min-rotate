@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/chunpu/min-rotate#readme",
   "dependencies": {
+    "async": "^1.5.2",
     "debug": "^2.2.0",
+    "glob": "^7.0.0",
     "lodash": "^4.4.0",
+    "moment": "^2.11.2",
     "mz": "^2.3.1"
   }
 }
